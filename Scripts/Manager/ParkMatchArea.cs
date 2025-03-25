@@ -5,40 +5,34 @@ public class ParkMatchArea : MonoBehaviour
 {
     public static ParkMatchArea Instance;
 
-    // Inspector'dan 4 adet slot Transform'unu atayın.
+    // Assign 4 slot Transforms from the Inspector.
     public Transform[] slots;
 
-    // Slotların doluluğunu takip etmek için.
+    // To track if slots are occupied.
     private bool[] slotOccupied;
 
-    // Parka giren arabaları takip ederiz.
+    // List to keep track of parked cars.
     public List<GameObject> parkedCars = new List<GameObject>();
 
-    void Awake()
-    {
+    private void Awake() {
         Instance = this;
-        // Her slot başlangıçta boş.
+        // Initially, each slot is empty.
         slotOccupied = new bool[slots.Length];
-        for (int i = 0; i < slotOccupied.Length; i++)
-        {
+        for (int i = 0; i < slotOccupied.Length; i++) {
             slotOccupied[i] = false;
         }
     }
 
-    // Araba park alanına gönderildiğinde uygun slotu bulup aracı hedef pozisyona yönlendirir.
-    public void MoveCarToPark(GameObject car)
-    {
-        // Uygun slotu bul.
-        for (int i = 0; i < slots.Length; i++)
-        {
-            if (!slotOccupied[i])
-            {
-                // Slot boşsa, hemen işaretleyelim.
+    // When a car is sent to the park area, find an available slot and direct the car to the target position.
+    public void MoveCarToPark(GameObject car) {
+        // Find an available slot.
+        for (int i = 0; i < slots.Length; i++) {
+            if (!slotOccupied[i]) {
+                // If the slot is available, mark it immediately.
                 slotOccupied[i] = true;
 
                 CarController controller = car.GetComponent<CarController>();
-                if (controller != null)
-                {
+                if (controller != null) {
                     Debug.Log("Moving to destination: " + slots[i].position);
                     controller.MoveToDestination(slots[i].position);
                 }
@@ -47,24 +41,19 @@ public class ParkMatchArea : MonoBehaviour
             }
         }
 
-        // Slotlara eklenen arabalar arasında match kontrolü yap.
+        // Perform match check among the parked cars.
         CheckMatch();
     }
 
-    // Örnek: Eşleşme kontrolü sonrası slotu temizleyelim.
-    void CheckMatch()
-    {
+    // Example: After matching, clear the slot.
+    private void CheckMatch() {
         Dictionary<Color, List<GameObject>> colorDict = new Dictionary<Color, List<GameObject>>();
-        foreach (var car in parkedCars)
-        {
-            if (car != null)
-            {
+        foreach (var car in parkedCars) {
+            if (car != null) {
                 CarController controller = car.GetComponent<CarController>();
-                if (controller != null)
-                {
+                if (controller != null) {
                     Color carColor = controller.carColor;
-                    if (!colorDict.ContainsKey(carColor))
-                    {
+                    if (!colorDict.ContainsKey(carColor)) {
                         colorDict[carColor] = new List<GameObject>();
                     }
                     colorDict[carColor].Add(car);
@@ -72,15 +61,12 @@ public class ParkMatchArea : MonoBehaviour
             }
         }
 
-        // Aynı renkten 3 veya daha fazla araba var ise, eşleşenleri temizleyelim.
-        foreach (var kvp in colorDict)
-        {
-            if (kvp.Value.Count >= 3)
-            {
-                foreach (var matchedCar in kvp.Value)
-                {
-                    // İlgili slotu temizlemek için, aracın hedef slotunu belirleyip slotOccupied dizisinde işareti kaldırabilirsiniz.
-                    // Burada basitçe yok ediyoruz.
+        // If there are 3 or more cars of the same color, clear the matched ones.
+        foreach (var kvp in colorDict) {
+            if (kvp.Value.Count >= 3) {
+                foreach (var matchedCar in kvp.Value) {
+                    // To clear the associated slot, you may determine the car's target slot and update the slotOccupied array accordingly.
+                    // For simplicity, we simply destroy the car.
                     Destroy(matchedCar);
                     parkedCars.Remove(matchedCar);
                 }

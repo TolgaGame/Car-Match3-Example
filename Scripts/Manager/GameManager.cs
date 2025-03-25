@@ -53,33 +53,27 @@ public class GameManager : MonoBehaviour
 
     #region Unity Methods
 
-    private void Awake()
-    {
+    private void Awake() {
         // Register with Locator system
         Locator.Instance.RegisterGameManager(this);
         Application.targetFrameRate = 60;
         LoadGameData();
     }
 
-    private void OnDestroy()
-    {
+    private void OnDestroy() {
         // Unregister from Locator system
-        if (Locator.Instance != null)
-        {
+        if (Locator.Instance != null) {
             Locator.Instance.UnregisterGameManager();
         }
     }
 
-    private void Start()
-    {
+    private void Start() {
         StartNewGame();
         IsClickable = true;
     }
 
-    private void Update()
-    {
-        if (isGameActive)
-        {
+    private void Update() {
+        if (isGameActive) {
             UpdateTimer();
         }
     }
@@ -88,8 +82,7 @@ public class GameManager : MonoBehaviour
 
     #region Game State Methods
 
-    public void StartNewGame()
-    {
+    public void StartNewGame() {
         currentScore = 0;
         currentMatches = 0;
         currentSpecialMatches = 0;
@@ -101,11 +94,9 @@ public class GameManager : MonoBehaviour
         UpdateUI();
     }
 
-    private void UpdateTimer()
-    {
+    private void UpdateTimer() {
         currentTime -= Time.deltaTime;
-        if (currentTime <= 0)
-        {
+        if (currentTime <= 0) {
             GameOver();
         }
         UpdateUI();
@@ -115,8 +106,7 @@ public class GameManager : MonoBehaviour
 
     #region Game Events
 
-    public void FinishLevel()
-    {
+    public void FinishLevel() {
         IsGameStarted = false;
         isGameActive = false;
         confetti.Play();
@@ -127,8 +117,7 @@ public class GameManager : MonoBehaviour
         SaveGameStats();
     }
 
-    public void GameOver()
-    {
+    public void GameOver() {
         IsGameStarted = false;
         Locator.Instance.SoundManagerInstance.PlaySFX("FailSound");
         OnGameLose?.Invoke();
@@ -140,14 +129,12 @@ public class GameManager : MonoBehaviour
 
     #region Level Methods
 
-    private void GenerateLevel()
-    {
+    private void GenerateLevel() {
         int spawnIndex = currentLevel - 1;
         // Locator.Instance.LevelGeneratorInstance.SpawnLevel(spawnIndex);
     }
 
-    private void LevelUp()
-    {
+    private void LevelUp() {
         currentLevel++;
         SaveSystem.Instance.UpdateLevel(currentLevel);
         currentTime = levelTime;
@@ -160,8 +147,7 @@ public class GameManager : MonoBehaviour
 
     #region Score Methods
 
-    public void AddScore(int matchCount, bool isSpecial = false)
-    {
+    public void AddScore(int matchCount, bool isSpecial = false) {
         int points = isSpecial ? pointsPerSpecialMatch : pointsPerMatch;
         currentScore += points * matchCount;
         if (isSpecial)
@@ -180,14 +166,12 @@ public class GameManager : MonoBehaviour
 
     #region Coin Methods
 
-    public void AddCoin(int amount)
-    {
+    public void AddCoin(int amount) {
         _coin += amount;
         SaveSystem.Instance.AddCoins(amount);
     }
 
-    public void DiscardCoin(int amount)
-    {
+    public void DiscardCoin(int amount) {
         _coin -= amount;
         SaveSystem.Instance.AddCoins(-amount);
     }
@@ -196,8 +180,7 @@ public class GameManager : MonoBehaviour
 
     #region UI Methods
 
-    private void UpdateUI()
-    {
+    private void UpdateUI() {
         scoreText.text = $"Score: {currentScore}";
         levelText.text = $"Level: {currentLevel}";
         timerText.text = $"Time: {Mathf.Ceil(currentTime)}s";
@@ -207,14 +190,12 @@ public class GameManager : MonoBehaviour
 
     #region Data Management
 
-    private void LoadGameData()
-    {
+    private void LoadGameData() {
         currentLevel = SaveSystem.Instance.GameData.currentLevel;
         _coin = SaveSystem.Instance.GameData.totalCoins;
     }
 
-    private void SaveGameStats()
-    {
+    private void SaveGameStats() {
         float gameTime = Time.time - gameStartTime;
         SaveSystem.Instance.UpdateGameStats(currentMatches, currentSpecialMatches, gameTime);
     }

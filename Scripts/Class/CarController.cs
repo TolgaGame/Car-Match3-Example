@@ -1,15 +1,13 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum CarType
-{
+public enum CarType {
     Normal,
     Special,
     Bomb
 }
 
-public class CarController : MonoBehaviour
-{
+public class CarController : MonoBehaviour {
     #region Variables
 
     [Header("Car Properties")]
@@ -32,20 +30,16 @@ public class CarController : MonoBehaviour
 
     #region Unity Methods
 
-    private void Awake()
-    {
+    private void Awake() {
         agent = GetComponent<NavMeshAgent>();
     }
 
-    private void Start()
-    {
+    private void Start() {
         InitializeSpecialEffects();
     }
 
-    private void Update()
-    {
-        if (isMoving)
-        {
+    private void Update() {
+        if (isMoving) {
             MoveToTarget();
         }
     }
@@ -54,27 +48,20 @@ public class CarController : MonoBehaviour
 
     #region Movement Methods
 
-    public void MoveToDestination(Vector3 destination)
-    {
+    public void MoveToDestination(Vector3 destination) {
         targetPosition = destination;
         isMoving = true;
     }
 
-    private void MoveToTarget()
-    {
-        // Move towards target position
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            targetPosition,
-            moveSpeed * Time.deltaTime
-        );
+    private void MoveToTarget() {
+        // Move towards target position.
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
-        // Rotate the car while moving
+        // Rotate the car while moving.
         transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
 
-        // Check if we reached the destination
-        if (Vector3.Distance(transform.position, targetPosition) < 0.01f)
-        {
+        // Check if destination is reached.
+        if (Vector3.Distance(transform.position, targetPosition) < 0.01f) {
             transform.position = targetPosition;
             isMoving = false;
             transform.rotation = Quaternion.identity;
@@ -85,46 +72,37 @@ public class CarController : MonoBehaviour
 
     #region Match Methods
 
-    public void OnMatch()
-    {
-        if (!isMatched)
-        {
+    public void OnMatch() {
+        if (!isMatched) {
             isMatched = true;
             PlayMatchEffects();
             HandleSpecialCarEffects();
         }
     }
 
-    private void PlayMatchEffects()
-    {
-        if (matchEffect != null)
-        {
+    private void PlayMatchEffects() {
+        if (matchEffect != null) {
             matchEffect.Play();
         }
     }
 
-    private void HandleSpecialCarEffects()
-    {
-        switch (carType)
-        {
+    private void HandleSpecialCarEffects() {
+        switch (carType) {
             case CarType.Bomb:
                 TriggerBombEffect();
                 break;
             case CarType.Special:
-                // Add special car effects here
+                // Add special car effects here.
                 break;
         }
     }
 
-    private void TriggerBombEffect()
-    {
-        // Find and match nearby cars
+    private void TriggerBombEffect() {
+        // Find and match nearby cars.
         Collider[] nearbyCars = Physics.OverlapSphere(transform.position, 2f);
-        foreach (var car in nearbyCars)
-        {
+        foreach (var car in nearbyCars) {
             CarController otherCar = car.GetComponent<CarController>();
-            if (otherCar != null && otherCar != this)
-            {
+            if (otherCar != null && otherCar != this) {
                 otherCar.OnMatch();
             }
         }
@@ -134,10 +112,8 @@ public class CarController : MonoBehaviour
 
     #region Input Methods
 
-    private void OnMouseDown()
-    {
-        if (!isMatched)
-        {
+    private void OnMouseDown() {
+        if (!isMatched) {
             Locator.Instance.GridManagerInstance.OnCarClicked(this);
         }
     }
@@ -146,12 +122,9 @@ public class CarController : MonoBehaviour
 
     #region Initialization Methods
 
-    private void InitializeSpecialEffects()
-    {
-        if (carType == CarType.Special || carType == CarType.Bomb)
-        {
-            if (specialEffect != null)
-            {
+    private void InitializeSpecialEffects() {
+        if (carType == CarType.Special || carType == CarType.Bomb) {
+            if (specialEffect != null) {
                 specialEffect.Play();
             }
         }
@@ -161,8 +134,7 @@ public class CarController : MonoBehaviour
 
     #region Properties
 
-    public Vector2Int GridPosition
-    {
+    public Vector2Int GridPosition {
         get { return gridPosition; }
         set { gridPosition = value; }
     }
