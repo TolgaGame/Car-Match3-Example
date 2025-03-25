@@ -6,7 +6,6 @@ Unity ile geliştirilmiş, araba temalı bir Match-3 oyunudur. Sadece BACK-END s
 
 - 🚗 Farklı renklerde arabalar
 - 🎯 3'lü ve 4'lü eşleştirmeler
-- 💥 Özel araba tipleri (Bomb, Special)
 - ⏱️ Zaman sınırlı seviyeler
 - 🏆 Puan sistemi
 - 🎨 Görsel efektler ve animasyonlar
@@ -30,8 +29,12 @@ Unity ile geliştirilmiş, araba temalı bir Match-3 oyunudur. Sadece BACK-END s
 - `GameManager.cs`: Oyun durumu ve UI yönetimi
 - `GridManager.cs`: Oyun grid'i ve araba yerleştirme
 - `MatchManager.cs`: Eşleştirme kontrolü ve puan sistemi
+
 - `CarController.cs`: Araba davranışları ve özel efektler
 
 ## Lisans
 
 Bu proje MIT lisansı altında lisanslanmıştır.
+
+
+![aaaaa](https://github.com/user-attachments/assets/be5ee840-9dc8-4b8a-a7da-6ef89046a409)
