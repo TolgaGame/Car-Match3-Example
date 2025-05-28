@@ -5,17 +5,17 @@ Unity ile geliştirilmiş, araba temalı bir Match-3 oyunudur. Sadece BACK-END s
 ## Özellikler
 
 - 🚗 Farklı renklerde arabalar
-- 🎯 3'lü ve 4'lü eşleştirmeler
-- ⏱️ Zaman sınırlı seviyeler
-- 🏆 Puan sistemi
+- 🎯 Popüler Match mekaniği 
+- ⏱️ Zaman sınırlı seviyeler (TO DO)
+- 🏆 Puan sistemi (TO DO)
 - 🎨 Görsel efektler ve animasyonlar
 
 ## Oynanış
 
 1. Grid üzerindeki arabalara tıklayarak onları park alanına taşıyın
 2. Aynı renkteki 3 veya daha fazla arabayı eşleştirin
-3. Özel arabaları kullanarak daha fazla puan kazanın
-4. Her seviyede belirli bir süre içinde hedef puana ulaşın
+3. Özel arabaları kullanarak daha fazla puan kazanın (TO DO)
+4. Her seviyede belirli bir süre içinde hedef puana ulaşın (TO DO)
 
 ### Proje Yapısı
 
